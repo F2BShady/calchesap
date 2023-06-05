@@ -5,11 +5,16 @@ class Calculator:
     def __init__(self, master):
         self.master = master
         master.title("Hesap Makinesi")
-        master.geometry("600x400")
+        master.geometry("620x540")
+        master.resizable(0, 0)
+
+        # Çerçeve oluştur
+        frame = Frame(master)
+        frame.grid(row=0, column=0, padx=10, pady=10)
 
         # Giriş alanı oluştur
-        self.entry = Entry(master, width=30, justify="right")
-        self.entry.grid(row=0, column=0, columnspan=4)
+        self.entry = Entry(frame, width=20, justify="right", font=("Arial", 20))
+        self.entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
         # Düğmeleri oluştur
         buttons = [
@@ -27,7 +32,7 @@ class Calculator:
             else:
                 button_text, row, col, rowspan, columnspan = button_info
 
-            button = Button(master, text=button_text, width=10, height=3)
+            button = Button(frame, text=button_text, width=10, height=3, font=("Arial", 14))
             button.grid(row=row, column=col, padx=5, pady=5, rowspan=rowspan, columnspan=columnspan)
             button.bind("<Button-1>", lambda event, text=button_text: self.on_button_click(text))
 
