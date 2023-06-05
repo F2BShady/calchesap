@@ -4,16 +4,27 @@ from tkinter import Tk, Button, Entry, Frame
 class Calculator:
     def __init__(self, master):
         self.master = master
-        master.title("Hesap Makinesi")
-        master.geometry("620x540")
+        master.title("Uygulama")
+        master.geometry("400x600")
         master.resizable(0, 0)
 
-        # Çerçeve oluştur
-        frame = Frame(master)
-        frame.grid(row=0, column=0, padx=10, pady=10)
+        # Sekme oluştur
+        tab_frame = Frame(master, bg="#f0f0f0", width=400, height=40)
+        tab_frame.grid(row=0, column=0, columnspan=2)
+
+        # Hesap makinesi alanı
+        self.calc_frame = Frame(master)
+        self.calc_frame.grid(row=1, column=0, padx=10, pady=10)
+
+        # Boş alan
+        self.empty_frame = Frame(master)
+        self.empty_frame.grid(row=1, column=1, padx=10, pady=10)
+
+        # Başlangıçta hesap makinesi alanı aktif
+        self.calc_frame.tkraise()
 
         # Giriş alanı oluştur
-        self.entry = Entry(frame, width=20, justify="right", font=("Arial", 20))
+        self.entry = Entry(self.calc_frame, width=20, justify="right", font=("Arial", 20))
         self.entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
         # Düğmeleri oluştur
@@ -32,9 +43,19 @@ class Calculator:
             else:
                 button_text, row, col, rowspan, columnspan = button_info
 
-            button = Button(frame, text=button_text, width=10, height=3, font=("Arial", 14))
+            button = Button(self.calc_frame, text=button_text, width=10, height=3, font=("Arial", 14), bg="#e0e0e0", fg="#333333")
             button.grid(row=row, column=col, padx=5, pady=5, rowspan=rowspan, columnspan=columnspan)
             button.bind("<Button-1>", lambda event, text=button_text: self.on_button_click(text))
+
+        # Sekme düğmesi oluştur
+        tab_button = Button(tab_frame, text="Calc", width=10, height=2, font=("Arial", 14))
+        tab_button.grid(row=0, column=0, padx=10, pady=5)
+        tab_button.configure(command=self.show_calc_frame)
+
+        # Boş alan düğmesi oluştur
+        empty_button = Button(tab_frame, text="Empty", width=10, height=2, font=("Arial", 14))
+        empty_button.grid(row=0, column=1, padx=10, pady=5)
+        empty_button.configure(command=self.show_empty_frame)
 
     # Düğmelere tıklama olaylarını işle
     def on_button_click(self, text):
@@ -54,6 +75,14 @@ class Calculator:
             self.entry.delete(0, "end")
         else:
             self.entry.insert("end", text)
+
+    # Hesap makinesi alanını göster
+    def show_calc_frame(self):
+        self.calc_frame.tkraise()
+
+    # Boş alanı göster
+    def show_empty_frame(self):
+        self.empty_frame.tkraise()
 
 # Ana uygulamayı oluştur
 root = Tk()
